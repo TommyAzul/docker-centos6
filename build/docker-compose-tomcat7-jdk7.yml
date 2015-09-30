@@ -1,0 +1,47 @@
+mysql56:
+  build: .
+  dockerfile: Dockerfile-mysql56
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: testapp
+  mem_limit: 1024m
+  restart: always
+  hostname: mysql
+  domainname: dev
+  extra_hosts:
+    - "dev:192.168.56.101"
+    - "default.dev:192.168.56.101"
+  ports:
+    - "3306:3306"
+    - "3309:3306"
+  volumes:
+    - /mnt/root/home:/root
+    - /mnt/mysql/mysql56/dev:/var/lib/mysql
+    - /mnt/root/mysql56/etc/my.cnf:/etc/my.cnf
+    - /mnt/root/mysql56/etc/my.cnf.d:/etc/my.cnf.d
+    - /mnt/root/mysql56/logs/mysql:/var/log/mysql
+  container_name: mysql56
+tomcat7:
+  build: .
+  dockerfile: Dockerfile-tomcat7-jdk7
+  mem_limit: 768m
+  restart: always
+  hostname: tomcat
+  domainname: dev
+  extra_hosts:
+    - "dev:192.168.56.101"
+    - "default.dev:192.168.56.101"
+    - "mysql:192.168.56.101"
+  ports:
+    - "8080:8080"
+    - "8009:8009"
+  volumes:
+    - /mnt/root/home:/root
+    - /mnt/root-bin/tomcat7/usr/share/tomcat7/bin:/usr/share/tomcat7/bin
+    - /mnt/root/tomcat7/etc/tomcat7:/etc/tomcat7
+    - /mnt/root/tomcat7/lib:/usr/share/java/tomcat7
+    - /mnt/tomcat/tomcat7/webapps:/var/lib/tomcat7/webapps
+    - /mnt/tomcat/tomcat7/logs:/var/log/tomcat7
+  links:
+    - mysql56:db
+  container_name: tomcat7

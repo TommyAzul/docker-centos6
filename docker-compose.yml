@@ -1,0 +1,53 @@
+mysql56:
+  build: .
+  dockerfile: Dockerfile-mysql56
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: testapp
+  mem_limit: 1024m
+  restart: always
+  hostname: mysql
+  domainname: dev
+  extra_hosts:
+    - "dev:192.168.56.101"
+    - "default.dev:192.168.56.101"
+  ports:
+    - "3306:3306"
+    - "3309:3306"
+  volumes:
+    - /mnt/root/home:/root
+    - /mnt/mysql/mysql56/dev:/var/lib/mysql
+    - /mnt/root/mysql56/etc/my.cnf:/etc/my.cnf
+    - /mnt/root/mysql56/etc/my.cnf.d:/etc/my.cnf.d
+    - /mnt/root/mysql56/logs/mysql:/var/log/mysql
+  container_name: mysql56
+php56:
+  build: .
+  dockerfile: Dockerfile-apache22-php56
+  mem_limit: 768m
+  restart: always
+  hostname: php
+  domainname: dev
+  extra_hosts:
+    - "dev:192.168.56.101"
+    - "default.dev:192.168.56.101"
+    - "mysql:192.168.56.101"
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - /mnt/root/home:/root
+    - /mnt/apache/apps:/data/apache
+    - /mnt/apache/libs:/data/php/libs
+    - /mnt/apache-bin/php:/data/php/bin
+    - /mnt/apache/php56/pear:/usr/share/pear
+    - /mnt/apache/php56/logs:/var/log/php
+    - /mnt/root/apache22/php56/etc/httpd/conf:/etc/httpd/conf
+    - /mnt/root/apache22/php56/etc/httpd/conf.d:/etc/httpd/conf.d
+    - /mnt/root/apache22/php56/etc/php.ini:/etc/php.ini
+    - /mnt/root/apache22/php56/etc/php.d:/etc/php.d
+    - /mnt/root/apache22/php56/modules:/usr/lib64/php/modules
+    - /mnt/root/apache22/php56/logs/httpd:/var/log/httpd
+  links:
+    - mysql56:db
+  container_name: php56

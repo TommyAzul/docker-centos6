@@ -1,0 +1,46 @@
+# Dockerfile
+FROM centos6/dev:1.0
+MAINTAINER Tom Aoki <tomyaoki@gmail.com>
+
+ENV JAVA_HOME /usr/java/default
+ENV CATALINA_BASE /usr/share/tomcat7
+ENV CATALINA_HOME /usr/share/tomcat7
+ENV JASPER_HOME /usr/share/tomcat7
+ENV CATALINA_TMPDIR /usr/share/tomcat7/temp
+ENV TOMCAT_LOG /usr/share/tomcat7/logs/catalina.out
+ENV CATALINA_PID /var/run/tomcat7.pid
+
+## tomcat-7
+RUN rpm --import http://www.jpackage.org/jpackage.asc
+RUN rpm -Uvh --force http://mirrors.dotsrc.org/jpackage/6.0/generic/free/RPMS/jpackage-release-6-3.jpp6.noarch.rpm
+RUN yum install --nogpgcheck -y tomcat7 tomcat7-webapps tomcat7-admin-webapps
+RUN yum clean all
+
+## Java SE 7
+RUN curl \
+    -L 'http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.rpm' \
+    -H 'Cookie: oraclelicense=accept-securebackup-cookie' \
+    -o /tmp/jdk-7u79-linux-x64.rpm && \
+    rpm -Uvh --force /tmp/jdk-7u79-linux-x64.rpm && \
+    rm -f /tmp/jdk-7u79-linux-x64.rpm
+
+RUN alternatives --install /usr/bin/java java /usr/java/default/bin/java 17079
+
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/setclasspath.sh /usr/share/tomcat7/bin/setclasspath.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/catalina.sh /usr/share/tomcat7/bin/catalina.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/configtest.sh /usr/share/tomcat7/bin/configtest.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/daemon.sh /usr/share/tomcat7/bin/daemon.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/digest.sh /usr/share/tomcat7/bin/digest.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/shutdown.sh /usr/share/tomcat7/bin/shutdown.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/startup.sh /usr/share/tomcat7/bin/startup.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/tool-wrapper.sh /usr/share/tomcat7/bin/tool-wrapper.sh
+COPY ./root-bin/tomcat7/usr/share/tomcat7/bin/version.sh /usr/share/tomcat7/bin/version.sh
+
+RUN chmod 755 /usr/share/tomcat7/bin/*.sh
+
+EXPOSE 8080
+EXPOSE 8009
+
+CMD ["/usr/share/tomcat7/bin/catalina.sh","run"]
+
+

@@ -1,0 +1,68 @@
+# Dockerfile
+FROM centos6/dev:1.0
+MAINTAINER Tom Aoki <tomyaoki@gmail.com>
+
+##
+## apache-2.2, php-5.3
+##
+ENV base_dir ./root/apache22/php53
+ENV httpd_conf_dir etc/httpd/conf
+ENV httpd_confd_dir etc/httpd/conf.d
+ENV php_conf_dir etc
+
+## epel
+RUN rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-6
+RUN rpm -Uvh --force http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+## apache with ssl
+RUN yum install -y openssl mod_ssl httpd postfix
+
+## php
+RUN yum install --disablerepo=remi-*,remi -y \
+        php \
+        php-cli \
+        php-gd \
+        php-mbstring \
+        php-mcrypt \
+        php-mysql \
+        php-pdo \
+        php-soap \
+        php-xml \
+        php-xmlrpc \
+        php-tidy \
+        php-pear \
+        php-pecl-xdebug \
+        php-pecl-mongo \
+        php-pecl-yaml \
+        php-pecl-imagick \
+        php-magickwand \
+        php-php-gettext
+
+RUN yum clean all
+
+RUN rm -f /${httpd_conf_dir}/httpd.conf /${httpd_confd_dir}/php.conf /${httpd_confd_dir}/welcome.conf /${httpd_confd_dir}/ssl.conf
+
+COPY ${base_dir}/${httpd_conf_dir}/httpd.conf /${httpd_conf_dir}/httpd.conf
+COPY ${base_dir}/${httpd_conf_dir}/ssl.conf /${httpd_conf_dir}/ssl.conf
+COPY ${base_dir}/${httpd_conf_dir}/mime.types /${httpd_conf_dir}/mime.types
+COPY ${base_dir}/${httpd_confd_dir}/default.localhost.conf /${httpd_confd_dir}/default.localhost.conf
+COPY ${base_dir}/${php_conf_dir}/php.ini /${php_conf_dir}/php.ini
+
+RUN mkdir -p /var/log/php
+RUN chown -R apache:apache /var/log/php
+
+## npm
+RUN wget -O /tmp/node-v4.1.0-linux-x64.tar.gz https://nodejs.org/dist/v4.1.0/node-v4.1.0-linux-x64.tar.gz
+RUN tar zxf /tmp/node-v4.1.0-linux-x64.tar.gz -C /usr/local/stow/
+RUN cd /usr/local/stow && stow -R node-v4.1.0-linux-x64
+RUN rm -f /tmp/node-v4.1.0-linux-x64.tar.gz
+
+## composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN chmod 755 /usr/local/bin/composer
+
+EXPOSE 80
+EXPOSE 443
+
+#CMD ["service", "httpd", "start"]
+CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]

@@ -1,0 +1,27 @@
+# Dockerfile
+FROM centos6/dev:1.0
+MAINTAINER Tom Aoki <tomyaoki@gmail.com>
+
+# Install server
+RUN rpm --import http://repo.mysql.com/RPM-GPG-KEY-mysql
+RUN yum install -y https://repo.mysql.com/mysql-community-release-el6.rpm
+RUN yum --enablerepo=mysql56-community install -y mysql-community-server.x86_64 mysql-community-client.x86_64
+RUN yum clean all
+
+COPY ./root/mysql56/etc/my.cnf /etc/my.cnf
+RUN mkdir -p /var/log/mysql /etc/my.cnf.d
+RUN chmod 644 /etc/my.cnf
+RUN chown -R mysql:mysql /var/log/mysql
+RUN mysql_install_db
+RUN chown -R mysql:mysql /var/lib/mysql
+
+EXPOSE 3306
+
+# Run a script to create a DB
+COPY ./config_db.sh /root/config_db.sh
+RUN chmod 755 /root/config_db.sh
+#RUN /etc/init.d/mysqld start; cat /var/log/mysql/mysqld-error.log
+RUN /root/config_db.sh
+
+#CMD ["service", "mysqld", "start"]
+CMD ["mysqld_safe"]

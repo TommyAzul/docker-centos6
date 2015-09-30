@@ -1,0 +1,163 @@
+set MACHINE_STORAGE_PATH=D:\VM\centos\machine
+docker-machine ls
+
+docker-machine create -d virtualbox --virtualbox-cpu-count "2" --virtualbox-memory "2048" --virtualbox-hostonly-cidr "192.168.56.1/24" dev
+docker-machine ls
+docker-machine start dev
+docker-machine env --shell cmd dev
+
+set DOCKER_TLS_VERIFY=1
+set DOCKER_HOST=tcp://192.168.56.102:2376
+set DOCKER_CERT_PATH=D:\VM\centos\machine\machines\dev
+set DOCKER_MACHINE_NAME=dev
+
+docker-machine ssh dev
+
+
+## 
+## Install docker-compose
+## 
+sudo curl -L -o /var/lib/boot2docker/docker-compose https://github.com/docker/compose/releases/download/1.4.1/docker-compose-Linux-x86_64
+sudo chmod 755 /var/lib/boot2docker/docker-compose
+cat << EOL | sudo tee /var/lib/boot2docker/bootlocal.sh
+#!/bin/sh
+
+if [ -x /var/lib/boot2docker/docker-compose -a ! -e /usr/local/bin/docker-compose ]; then
+    ln -s /var/lib/boot2docker/docker-compose /usr/local/bin/docker-compose
+fi
+
+EOL
+sudo chmod 755 /var/lib/boot2docker/bootlocal.sh
+sudo ln -s /var/lib/boot2docker/docker-compose /usr/local/bin/docker-compose
+
+
+## Use docker-compose from MinGW (~/.bashrc)
+#bash
+#cd
+#echo "alias docker-compose='docker-machine ssh dev -t \"docker-compose \$@\"'" >> ~/.bashrc
+#docker-compose -h
+
+
+## 
+## custom mount on Tiny Linux
+## 
+cat << EOL | sudo tee /var/lib/boot2docker/bootsync.sh
+#!/bin/sh
+
+[ -d /mnt/mysql ] || sudo mkdir -p /mnt/mysql
+sudo mount -t vboxsf -o defaults,uid=27,gid=27,dmode=755,fmode=644 "mysql" /mnt/mysql
+
+[ -d /mnt/apache ] || sudo mkdir -p /mnt/apache
+sudo mount -t vboxsf -o defaults,uid=48,gid=48,dmode=755,fmode=644 "apache" /mnt/apache
+
+[ -d /mnt/root ] || sudo mkdir -p /mnt/root
+sudo mount -t vboxsf -o defaults,uid=0,gid=0,dmode=755,fmode=644 "root" /mnt/root
+
+[ -d /mnt/tomcat ] || sudo mkdir -p /mnt/tomcat
+sudo mount -t vboxsf -o defaults,uid=91,gid=91,dmode=755,fmode=644 "tomcat" /mnt/tomcat
+
+[ -d /mnt/centos6 ] || sudo mkdir -p /mnt/centos6
+sudo mount -t vboxsf -o defaults,uid=1000,gid=50,dmode=755,fmode=644 "centos6" /mnt/centos6
+
+[ -d /mnt/root-bin ] || sudo mkdir -p /mnt/root-bin
+sudo mount -t vboxsf -o defaults,uid=0,gid=0,dmode=755,fmode=755 "root-bin" /mnt/root-bin
+
+[ -d /mnt/apache-bin ] || sudo mkdir -p /mnt/apache-bin
+sudo mount -t vboxsf -o defaults,uid=48,gid=48,dmode=755,fmode=755 "apache-bin" /mnt/apache-bin
+
+EOL
+sudo chmod 755 /var/lib/boot2docker/bootsync.sh
+sudo /var/lib/boot2docker/bootsync.sh
+
+
+## Use docker-compose from Tiny Linux
+cd BuildDir(the path placed docker-compose.yml)
+docker-compose up -d
+docker-compose -p ProjectName up -d
+docker-compose -p ProjectName -f DockerComposeYamlfileName up -d
+
+
+## -----------------------------------
+
+
+## check container
+docker-compose ps
+docker ps
+docker ps -a
+
+
+## check logs
+docker-compose logs
+docker-compose logs ContainerId,,,
+docker logs ContainerId,,,
+
+
+## check build history
+docker-compose history Repository:Tag
+
+
+## stop container
+docker-compose stop
+docker-compose stop ContainerId,,,
+docker stop ContainerId,,,
+
+
+## delete container
+docker-compose rm
+docker-compose rm ContainerId,,,
+docker rm ContainerId,,,
+
+
+## create and start container
+cd BuildDir(the path placed docker-compose.yml)
+docker-compose up -d
+docker-compose -p ProjectName up -d
+docker-compose -p ProjectName up -d ContainerName
+docker-compose -p ProjectName -f DockerComposeYamlfileName up -d
+
+
+## login to container
+docker exec -it ContainerName bash
+docker attach ContainerName
+
+
+## rebuild container when you change docker-compose.yml
+docker-compose build --no-cache
+docker-compose -p ProjectName build ServiceName
+docker-compose -p ProjectName -f docker-compose-file-name.yml build ServiceName --no-cache
+docker build -t Repository:Tag .
+
+
+##
+## custom docker image
+##
+#docker pull centos:6
+cd centos/6.6/base
+docker build -t centos6/dev:1.0 .
+docker images
+# docker run -d -it -p LocalPort:ExternalPort --hostname HostName --name ContainerName centos:6 /bin/bash
+# docker run -d -it --name ContainerName centos:6 /bin/bash
+
+
+## start container from image
+docker run -d -it -p 80:80 -p 443:443 --name php dev:1.0
+#docker run -d -it --hostname dev.localhost -p 80:80 -p 443:443 -v /path/to/host:/path/to/container --name php54 dev:php54
+docker ps -a
+
+
+## create custom image from container
+docker commit -m "test1" ContainerId contos6/dev:1.0
+
+
+##
+## import, export docker
+## (nolonger available to execute "docker-compose up -d" when it's exported from container into a file.)
+##
+#start container as docker-compose -p ProjectName up -d
+docker export ContainerId > /path/to/host/ExportFileName.tar
+cat /path/to/host/exportFileName.tar | docker import - DockerImageName(Repository:Tag, ie centos6_php54:latest)
+
+docker save Repository:Tag > /path/to/host/ExportFileName.tar
+cat /path/to/host/exportFileName.tar | docker import - DockerImageName(Repository:Tag, ie centos6_php54:latest)
+
+
