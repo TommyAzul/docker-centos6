@@ -32,7 +32,7 @@ First, you need install [docker-toolbox](https://www.docker.com/toolbox) and mak
 
 Default virtual machine installation path is at %HOMEPATH%, but I need install Virtualbox image and docker machine at "D:\VM\centos\machine". You can skip this if you don't need change the path.
 
-Now, open cmd (command line) and type this.
+Now, open cmd command line and type this.
 
     set MACHINE_STORAGE_PATH=D:\VM\centos\machine
 
@@ -118,11 +118,21 @@ Open cmd command line, type the follow lines.
     # for root user and 755 permission
     VBoxManage sharedfolder add centos6 --hostpath "D:\VM\centos\6.6\root-bin"   --name "root-bin"   --automount
 
-    # for root user and 755 permission
+    # for tomcat user and 644 permission
     VBoxManage sharedfolder add centos6 --hostpath "D:\VM\centos\6.6\tomcat"     --name "tomcat"     --automount
 
-    # for tomcat user and 644 permission
+    # for docker user and 644 permission
     VBoxManage sharedfolder add centos6 --hostpath "D:\VM\centos\6.6"            --name "centos6"    --automount
+
+    # to enable create symbolic link in docker container
+    VBoxManage setextradata centos6 VBoxInternal2/SharedFoldersEnableSymlinksCreate/apache 1
+    VBoxManage setextradata centos6 VBoxInternal2/SharedFoldersEnableSymlinksCreate/apache-bin 1
+    VBoxManage setextradata centos6 VBoxInternal2/SharedFoldersEnableSymlinksCreate/mysql 1
+    VBoxManage setextradata centos6 VBoxInternal2/SharedFoldersEnableSymlinksCreate/root 1
+    VBoxManage setextradata centos6 VBoxInternal2/SharedFoldersEnableSymlinksCreate/root-bin 1
+    VBoxManage setextradata centos6 VBoxInternal2/SharedFoldersEnableSymlinksCreate/tomcat 1
+
+    VBoxManage getextradata centos6 enumerate
 
 
 #### 2. Mount on Tiny Linux
@@ -253,14 +263,24 @@ And start LAMP (Apache-2.2, MySQL-5.6 PHP-5.6) server.
 
 #### 8. Login docker container
 
+Before start container, you need run VirtualBox as Administrator or otherwise you can not create symbolic link at mounted shared folders in docker container.
+
+    exit (or Ctrl+d)
+    docker-machine stop centos6
+
+Open cmd command line as Administrator.
+
+    docker-machine start centos6
+    docker-machine ssh centos6
+    
     docker exec -it php56 bash
 
 
 
 
-## How to start docker container after setup.
+## How to start docker container after setup docker and startup windows.
 
-Open cmd command line.
+Open cmd command line as Administrator.
 
     set MACHINE_STORAGE_PATH=D:\VM\centos\machine
     docker-machine start centos6
