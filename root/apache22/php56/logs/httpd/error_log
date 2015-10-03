@@ -1,0 +1,69 @@
+[Thu Oct 01 02:49:14 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 02:49:14 2015] [notice] Digest: done
+[Thu Oct 01 02:49:14 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.6
+[Thu Oct 01 02:49:14 2015] [warn] pid file /etc/httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Thu Oct 01 02:49:14 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 02:49:14 2015] [crit] cgid daemon failed to initialize
+[Thu Oct 01 05:55:34 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 05:55:34 2015] [notice] Digest: done
+[Thu Oct 01 05:55:34 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.6
+[Thu Oct 01 05:55:35 2015] [warn] pid file /etc/httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Thu Oct 01 05:55:35 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 05:55:35 2015] [crit] cgid daemon failed to initialize
+Warning: DocumentRoot [/data/apache/phalcon.dev/public] does not exist
+[Thu Oct 01 10:57:40 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 10:57:40 2015] [notice] Digest: done
+[Thu Oct 01 10:57:40 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.7
+[Thu Oct 01 10:57:41 2015] [warn] pid file /etc/httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Thu Oct 01 10:57:41 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 10:57:41 2015] [crit] cgid daemon failed to initialize
+Warning: DocumentRoot [/data/apache/phalcon.dev/public] does not exist
+[Thu Oct 01 11:01:08 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 11:01:08 2015] [notice] Digest: done
+[Thu Oct 01 11:01:08 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.6
+[Thu Oct 01 11:01:08 2015] [warn] pid file /etc/httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Thu Oct 01 11:01:08 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 11:01:08 2015] [crit] cgid daemon failed to initialize
+[Thu Oct 01 12:09:01 2015] [error] [client 192.168.56.1] File does not exist: /data/apache/default/htdocs/favicon.ico, referer: http://phalcon.invo.dev/
+[Thu Oct 01 12:09:14 2015] [notice] caught SIGTERM, shutting down
+[Thu Oct 01 12:09:15 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 12:09:15 2015] [notice] Digest: done
+[Thu Oct 01 12:09:15 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.7
+[Thu Oct 01 12:09:15 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 12:09:15 2015] [crit] cgid daemon failed to initialize
+[Thu Oct 01 12:27:43 2015] [error] [client 192.168.56.1] File does not exist: /data/apache/phalcon.dev/invo/public
+[Thu Oct 01 12:27:46 2015] [error] [client 192.168.56.1] File does not exist: /data/apache/phalcon.dev/invo/public, referer: http://phalcon.invo.dev/
+[Thu Oct 01 12:27:52 2015] [error] [client 192.168.56.1] File does not exist: /data/apache/phalcon.dev/invo/public
+[Thu Oct 01 12:28:41 2015] [notice] caught SIGTERM, shutting down
+Warning: DocumentRoot [/data/apache/phalcon.dev/invo/public] does not exist
+[Thu Oct 01 12:28:42 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 12:28:42 2015] [notice] Digest: done
+[Thu Oct 01 12:28:42 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.6
+[Thu Oct 01 12:28:42 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 12:28:42 2015] [crit] cgid daemon failed to initialize
+[Thu Oct 01 12:28:47 2015] [error] [client 192.168.56.1] File does not exist: /data/apache/phalcon.dev/invo/public
+[Thu Oct 01 12:28:48 2015] [error] [client 192.168.56.1] File does not exist: /data/apache/phalcon.dev/invo/public, referer: http://phalcon.invo.dev/invo/
+[Thu Oct 01 12:40:22 2015] [notice] caught SIGTERM, shutting down
+[Thu Oct 01 12:40:23 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 12:40:23 2015] [notice] Digest: done
+[Thu Oct 01 12:40:23 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.6
+[Thu Oct 01 12:40:23 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 12:40:23 2015] [crit] cgid daemon failed to initialize
+[Thu Oct 01 12:42:58 2015] [notice] caught SIGTERM, shutting down
+[Thu Oct 01 12:42:59 2015] [notice] Digest: generating secret for digest authentication ...
+[Thu Oct 01 12:42:59 2015] [notice] Digest: done
+[Thu Oct 01 12:42:59 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.7
+[Thu Oct 01 12:42:59 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Thu Oct 01 12:42:59 2015] [crit] cgid daemon failed to initialize
+[Fri Oct 02 12:24:29 2015] [notice] caught SIGTERM, shutting down
+[Fri Oct 02 12:24:29 2015] [notice] Digest: generating secret for digest authentication ...
+[Fri Oct 02 12:24:29 2015] [notice] Digest: done
+[Fri Oct 02 12:24:29 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.7
+[Fri Oct 02 12:24:29 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Fri Oct 02 12:24:29 2015] [crit] cgid daemon failed to initialize
+[Sat Oct 03 15:26:08 2015] [notice] Digest: generating secret for digest authentication ...
+[Sat Oct 03 15:26:08 2015] [notice] Digest: done
+[Sat Oct 03 15:26:08 2015] [error] (1)Operation not permitted: Couldn't bind unix domain socket /etc/httpd/logs/cgisock.7
+[Sat Oct 03 15:26:09 2015] [warn] pid file /etc/httpd/run/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Oct 03 15:26:09 2015] [notice] Apache/2.2.15 (Unix) mod_ssl/2.2.15 OpenSSL/1.0.1e-fips configured -- resuming normal operations
+[Sat Oct 03 15:26:09 2015] [crit] cgid daemon failed to initialize

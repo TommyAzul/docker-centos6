@@ -12,6 +12,7 @@ src/
 ibdata*
 ib_logfile*
 testapp/
+invo/
 mysql-bin.*
 .subversion/
 .composer/
@@ -19,4 +20,6 @@ examples/
 manager/
 sample/
 host-manager/
-ROOT/
+tomcat/tomcat7/webapps/ROOT/
+cache/
+*.pid

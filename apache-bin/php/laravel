@@ -1,0 +1,5 @@
+#!/bin/bash
+
+[ -z $COMPOSER_HOME ] && export COMPOSER_HOME=/data/php/libs
+php $COMPOSER_HOME/vendor/laravel/installer/laravel "$@"
+
